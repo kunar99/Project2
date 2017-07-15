@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-public class MildotCalculator extends JFrame implements ActionListener {
+public class Gui extends JFrame implements ActionListener {
 
     //Height and weight for the JFrame
     private static final int WIDTH = 765;
@@ -23,23 +23,30 @@ public class MildotCalculator extends JFrame implements ActionListener {
     private static JButton transferButton;
     private static JButton balanceButton;
 
+    private static JOptionPane insufficientFunds;
+    private static JOptionPane increments;
+    private static JOptionPane balance;
+    private static JOptionPane withdraw;
+    private static JOptionPane deposit;
+    private static JOptionPane transfer;
+
     //Creation of the text fields for input/output
-    private static JTextField accountTxt;
-    //private static JTextField milNumberTxt;
-    //public static JTextField outputShot;
+    private static JTextField withdrawAmountTxt;
+    private static JTextField depositAmountTxt;
+    public static JTextField transferAmountTxt;
     
-    //Creation of the label names
-    private static JLabel withdrawLabel;
-    private static JLabel depositLabel;
-    private static JLabel transferLabel;
-    private static JLabel balanceLabel;
+//    //Creation of the label names
+//    private static JLabel withdrawLabel;
+//    private static JLabel depositLabel;
+//    private static JLabel transferLabel;
+//    private static JLabel balanceLabel;
     
     //Creating Radio buttons names
     private static JRadioButton checkingRadButt;
     private static JRadioButton savingsRadButt;
 
     //constructor
-    public MildotCalculator() {
+    public Gui() {
         super("ATM Machine");
 
         //Specifies the layout of the frame
@@ -49,67 +56,87 @@ public class MildotCalculator extends JFrame implements ActionListener {
 
         //Creation of a JPanel
         JPanel panel = new JPanel();
+        JPanel panel2 = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
-        add(panel, BorderLayout.SOUTH);
+        add(panel, BorderLayout.NORTH);
+        panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
+        add(panel2, BorderLayout.CENTER);
 
 
         //Creating two textPanels to be used
         JPanel textPanel = new JPanel();
-        JPanel textPanel2 = new JPanel();
         textPanel.setLayout(new GridLayout(4, 2));
-        add(textPanel, BorderLayout.WEST);
-        add(textPanel2, BorderLayout.NORTH);
+        add(textPanel, BorderLayout.CENTER);
 
 
-        //Creating text and label fields for Value, Mils, Results, and example
-        //Example label is created to give the user a visual example of data to input and validate their results.
-        exampleLabel = new JLabel("Example: (Target is 68 inches * 27.8) divided by (Target in Mil Reticle is 4 mils) equals a distance to target of 472.6 yards");
-        textPanel2.add(exampleLabel);
+        //Creating the various JOption Panes to be displayed
+        JOptionPane withdraw = new JOptionPane();
+        withdraw.setLayout(new FlowLayout(FlowLayout.CENTER));
+        textPanel.add(withdrawAmountTxt);
 
-        //Creating a size text/label field for user to input their values
-        sizeLabel = new JLabel("Target size in inches: ");
-        textPanel.add(sizeLabel);
-        sizeNumberTxt = new JTextField(5);
-        textPanel.add(sizeNumberTxt);
-        sizeNumberTxt.setEditable(true);
-        //User can hover their mouse over this field to get an explanation of what data needs to be entered
-        sizeNumberTxt.setToolTipText("This field is to enter the size of your target in inches. Target size needs to be in inches to be calculated corrected.");
+        JOptionPane insufficientFunds = new JOptionPane();
+        insufficientFunds.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-       //Creating a mil Text/Label field for user to input their values
-        milLabel = new JLabel("Mils of your target:  "); 
-        textPanel.add(milLabel);
-        milNumberTxt = new JTextField(5);
-        textPanel.add(milNumberTxt);
-        milNumberTxt.setEditable(true);
-        //User can hover their mouse over this field to get an explanation of what data needs to be entered
-        milNumberTxt.setToolTipText("This field corresponds to the amount of mildots your target is from the bottom first dot, within your scopes reticle.");
 
-        //Creating a results Text/Label to display the calculated distance information
-        resultsLabel = new JLabel("Distance in Yards-to-Target: ");           
-        textPanel.add(resultsLabel);
-        outputShot = new JTextField(5);
-        textPanel.add(outputShot);
-        outputShot.setFont(new java.awt.Font("Arial", Font.ITALIC | Font.BOLD, 15));
-        outputShot.setForeground(Color.RED);
-        outputShot.setEditable(false);
+        JOptionPane increments = new JOptionPane();
+        increments.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JOptionPane balance = new JOptionPane();
+        balance.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JOptionPane deposit = new JOptionPane();
+        deposit.setLayout(new FlowLayout(FlowLayout.CENTER));
+        textPanel.add(depositAmountTxt);
+
+        JOptionPane transfer = new JOptionPane();
+        transfer.setLayout(new FlowLayout(FlowLayout.CENTER));
+        textPanel.add(transferAmountTxt);
+
+
+
+//        //Creating a results Text/Label to display the calculated distance information
+//        resultsLabel = new JLabel("Distance in Yards-to-Target: ");
+//        textPanel.add(resultsLabel);
+//        outputShot = new JTextField(5);
+//        textPanel.add(outputShot);
+//        outputShot.setFont(new Font("Arial", Font.ITALIC | Font.BOLD, 15));
+//        outputShot.setForeground(Color.RED);
+//        outputShot.setEditable(false);
 
         //Creating a JButton so user can perform the calculation
-        button = new JButton("Calculate Your Shot");
-        panel.add(button);
+        withdrawButton = new JButton("Withdraw");
+        panel.add(withdrawButton);
         //User can hover their mouse over this field to get an explanation of what action needs to be performed
-        button.setToolTipText("Button must be clicked to calculate the distance");
+        withdrawButton.setToolTipText("Button must be clicked to calculate the distance");
+
+        depositButton = new JButton("Deposit");
+        panel.add(depositButton);
+        depositButton.setToolTipText("Button will display your check/cash deposit options");
+
+        transferButton = new JButton("Transfer");
+        panel.add(transferButton);
+        transferButton.setToolTipText("Transfer button will display your checking/savings account transfer options");
+
+        balanceButton = new JButton("Balance");
+        panel.add(balanceButton);
+        balanceButton.setToolTipText("Balance button will display your checking/savings account balance");
+
         
         //Creating the JRadioButtons to be used by user
-        JRadioButton checkingRad = new JRadioButton(checkingRadButt);
-        checkingRad.setActionCommand(checkRadButt);
+        JRadioButton checkingRad = new JRadioButton("Checking", true);
+        panel2.add(checkingRad);
+        add(panel2, BorderLayout.CENTER);
+        checkingRad.setActionCommand("Checking");
         
-        JRadioButton savingsRad = new JRadioButton(savingsRadButt);
-        savingsRad.setActionCommand(savingsRadButt);
+        JRadioButton savingsRad = new JRadioButton("Savings", true );
+        panel2.add(savingsRad);
+        add(panel2, BorderLayout.CENTER);
+        savingsRad.setActionCommand("Savings");
         
         //Grouping of the radio buttons
         ButtonGroup group = new ButtonGroup();
         group.add(checkingRad);
-        group.add(savingsRad;
+        group.add(savingsRad);
 
     }
 
@@ -148,23 +175,22 @@ public class MildotCalculator extends JFrame implements ActionListener {
         double yards = (27.8 * value / mils);
         DecimalFormat df = new DecimalFormat("###.##");
 
-        outputShot.setText(df.format(yards));
+      //  outputShot.setText(df.format(yards));
     }
 
 
     //Start of Main Method
     public static void main(String[] args) {
-        MildotCalculator calc = new MildotCalculator();
+        Gui calc = new Gui();
 
         calc.display();
 
 
         //Action Listener for the Calc Button
-        //checkingRad.addActionListener(this);
-        //savingsRad.addActionListener(this);
-        button.addActionListener (e ->  {
 
-            if (number(sizeNumberTxt.getText()) && number(milNumberTxt.getText()))
+        withdrawButton.addActionListener (e ->  {
+
+            if (number(withdrawAmountTxt.getText()) )
                     { calcYards (Double.parseDouble(sizeNumberTxt.getText()), Double.parseDouble(milNumberTxt.getText())); }
         } );
 
