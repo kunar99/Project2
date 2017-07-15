@@ -9,9 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.DecimalFormat;
 
-public class Gui extends JFrame implements ActionListener {
+public class Gui extends JFrame implements ActionListener { //, WindowListener {
 
     //Height and weight for the JFrame
     private static final int WIDTH = 765;
@@ -33,10 +35,11 @@ public class Gui extends JFrame implements ActionListener {
     //Creation of the text fields for input/output
     private static JTextField withdrawAmountTxt;
     private static JTextField depositAmountTxt;
-    public static JTextField transferAmountTxt;
+    private static JTextField transferAmountTxt;
+    private static JTextField userInput;
     
 //    //Creation of the label names
-//    private static JLabel withdrawLabel;
+    private static JLabel userInputLabel;
 //    private static JLabel depositLabel;
 //    private static JLabel transferLabel;
 //    private static JLabel balanceLabel;
@@ -63,49 +66,25 @@ public class Gui extends JFrame implements ActionListener {
         add(panel2, BorderLayout.CENTER);
 
 
-        //Creating two textPanels to be used
+        //Creating textPanels to be used
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(4, 2));
-        add(textPanel, BorderLayout.CENTER);
+        add(textPanel, BorderLayout.SOUTH);
 
-
-        //Creating the various JOption Panes to be displayed
-        JOptionPane withdraw = new JOptionPane();
-        withdraw.setLayout(new FlowLayout(FlowLayout.CENTER));
-        textPanel.add(withdrawAmountTxt);
-
-        JOptionPane insufficientFunds = new JOptionPane();
-        insufficientFunds.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-
-        JOptionPane increments = new JOptionPane();
-        increments.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-        JOptionPane balance = new JOptionPane();
-        balance.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-        JOptionPane deposit = new JOptionPane();
-        deposit.setLayout(new FlowLayout(FlowLayout.CENTER));
-        textPanel.add(depositAmountTxt);
-
-        JOptionPane transfer = new JOptionPane();
-        transfer.setLayout(new FlowLayout(FlowLayout.CENTER));
-        textPanel.add(transferAmountTxt);
-
-
-
-//        //Creating a results Text/Label to display the calculated distance information
-//        resultsLabel = new JLabel("Distance in Yards-to-Target: ");
-//        textPanel.add(resultsLabel);
-//        outputShot = new JTextField(5);
-//        textPanel.add(outputShot);
-//        outputShot.setFont(new Font("Arial", Font.ITALIC | Font.BOLD, 15));
-//        outputShot.setForeground(Color.RED);
-//        outputShot.setEditable(false);
+        //Creating a results Text/Label to display the calculated distance information
+        userInputLabel = new JLabel("");
+        textPanel.add(userInputLabel);
+        userInput = new JTextField(15);
+        textPanel.add(userInput);
+        userInput.setFont(new Font("Arial", Font.ITALIC | Font.BOLD, 15));
+        userInput.setForeground(Color.RED);
+        userInput.setEditable(false);
 
         //Creating a JButton so user can perform the calculation
         withdrawButton = new JButton("Withdraw");
         panel.add(withdrawButton);
+        //addWindowListener(this);
+        //withdrawButton.addActionListener(this);
         //User can hover their mouse over this field to get an explanation of what action needs to be performed
         withdrawButton.setToolTipText("Button must be clicked to calculate the distance");
 
@@ -121,7 +100,19 @@ public class Gui extends JFrame implements ActionListener {
         panel.add(balanceButton);
         balanceButton.setToolTipText("Balance button will display your checking/savings account balance");
 
-        
+        //Creating the various JOption Panes to be displayed
+        JOptionPane insufficientFunds = new JOptionPane();
+        insufficientFunds.setLayout(new FlowLayout(FlowLayout.CENTER));
+        //insufficientFunds.showMessageDialog(null,"Insufficient Funds in Account");
+
+        JOptionPane increments = new JOptionPane();
+        increments.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JOptionPane balance = new JOptionPane();
+        balance.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+
+
         //Creating the JRadioButtons to be used by user
         JRadioButton checkingRad = new JRadioButton("Checking", true);
         panel2.add(checkingRad);
@@ -175,7 +166,7 @@ public class Gui extends JFrame implements ActionListener {
         double yards = (27.8 * value / mils);
         DecimalFormat df = new DecimalFormat("###.##");
 
-      //  outputShot.setText(df.format(yards));
+      //  userInput.setText(df.format(yards));
     }
 
 
@@ -188,11 +179,46 @@ public class Gui extends JFrame implements ActionListener {
 
         //Action Listener for the Calc Button
 
-        withdrawButton.addActionListener (e ->  {
-
-            if (number(withdrawAmountTxt.getText()) )
-                    { calcYards (Double.parseDouble(sizeNumberTxt.getText()), Double.parseDouble(milNumberTxt.getText())); }
-        } );
+//        withdrawButton.addActionListener ((ActionEvent e) ->  {
+//
+//            if (number(withdrawAmountTxt.getText()) )
+//                    { calcYards (Double.parseDouble(sizeNumberTxt.getText()), Double.parseDouble(milNumberTxt.getText())); }
+//        } );
 
     }//End of Main
+
+//    @Override
+//    public void windowOpened(WindowEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void windowClosing(WindowEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void windowClosed(WindowEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void windowIconified(WindowEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void windowDeiconified(WindowEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void windowActivated(WindowEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void windowDeactivated(WindowEvent e) {
+//
+//    }
 }//End of Class
